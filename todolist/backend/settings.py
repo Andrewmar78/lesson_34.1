@@ -13,11 +13,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-import environ
 
 # root = environ.Path(__file__) - 3
-env = environ.Env()
-environ.Env.read_env()  # reading .env file
+env = os.environ.Env()
 
 # SITE_ROOT = root()
 DEBUG = env.bool('DEBUG', default=False)
