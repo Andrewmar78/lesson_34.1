@@ -11,41 +11,38 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+
+import environ
 from dotenv import load_dotenv
 
-
 # root = environ.Path(__file__) - 3
-env = os.environ.Env()
-
-# SITE_ROOT = root()
-DEBUG = env.bool('DEBUG', default=False)
-# TEMPLATE_DEBUG = DEBUG
-DATABASES = {'default': env.db('DATABASE_URL')}
-# public_root = root.path('public/')
-# MEDIA_ROOT = public_root('media')
-# MEDIA_URL = env.str('MEDIA_URL', default='media/')
-# STATIC_ROOT = public_root('static')
-STATIC_URL = env.str('STATIC_URL', default='static/')
-SECRET_KEY = env.str('SECRET_KEY')
-# CACHES = {'default': env.cache('REDIS_CACHE_URL')}
-
-
-load_dotenv()
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SITE_ROOT = root()
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env.bool('DEBUG', default=False)
+# DEBUG = True
+
+# TEMPLATE_DEBUG = DEBUG
+# public_root = root.path('public/')
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env.str('SECRET_KEY')
+# SECRET_KEY = 'django-insecure-m#y@qr71e!o^420r2%n@_b=--w=6i9gl6uxzw8h5h9a^3(!ebw'
+
+# CACHES = {'default': env.cache('REDIS_CACHE_URL')}
+
+load_dotenv()
 
 # Receive environments from env-file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-m#y@qr71e!o^420r2%n@_b=--w=6i9gl6uxzw8h5h9a^3(!ebw'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -103,16 +100,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'todolist',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+DATABASES = {'default': env.db('DATABASE_URL')}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'todolist',
+#         'USER': 'user',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -150,7 +148,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Static directory fixed
+STATIC_URL = env.str('STATIC_URL', default='static/')
 # STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+# Media directory fixed
+# MEDIA_ROOT = public_root('media')
+# MEDIA_URL = env.str('MEDIA_URL', default='media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
