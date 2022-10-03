@@ -141,5 +141,5 @@ Werkzeug==2.0.3
 zipp==3.8.1
 
 pip~=22.2.2
-setuptools~=63.2.0
+setuptools==65.4.1
 environ~=1.0

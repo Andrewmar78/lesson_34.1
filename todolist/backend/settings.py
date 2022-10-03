@@ -13,10 +13,15 @@ import os
 from pathlib import Path
 
 import environ
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # root = environ.Path(__file__) - 3
-env = environ.Env()
+# env = environ.Env()
+
+env = environ.Env(
+    # set casting, default values
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,8 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SITE_ROOT = root()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', default=False)
+# DEBUG = env.bool('DEBUG', default=False)
 # DEBUG = True
+DEBUG = env('DEBUG')
 
 # TEMPLATE_DEBUG = DEBUG
 # public_root = root.path('public/')
@@ -36,7 +42,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 
 # CACHES = {'default': env.cache('REDIS_CACHE_URL')}
 
-load_dotenv()
+# load_dotenv()
 
 # Receive environments from env-file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -93,6 +99,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# for sqlite3
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -100,7 +107,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
-DATABASES = {'default': env.db('DATABASE_URL')}
+# for postgres
+# DATABASE_URL should be moved to .env
+# DATABASE_URL=psql://:@:/
+# DATABASES = {'default': env.db('DATABASE_URL')}
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -111,6 +122,17 @@ DATABASES = {'default': env.db('DATABASE_URL')}
 #         'PORT': '5432',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': env('DB_ENGINE'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
