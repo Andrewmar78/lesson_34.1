@@ -8,3 +8,5 @@ services:
       POSTGRES_PASSWORD: todolist
       POSTGRES_DB: todolist
     restart: always
+    ports:
+      - "5432:5432"
