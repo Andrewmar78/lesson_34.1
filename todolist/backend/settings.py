@@ -16,7 +16,6 @@ import environ
 # from dotenv import load_dotenv
 
 # root = environ.Path(__file__) - 3
-# env = environ.Env()
 
 env = environ.Env(
     # set casting, default values
@@ -26,11 +25,11 @@ env = environ.Env(
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SITE_ROOT = root()
+# Receive environments from env-file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+# SITE_ROOT = root()
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = env.bool('DEBUG', default=False)
-# DEBUG = True
 DEBUG = env('DEBUG')
 
 # TEMPLATE_DEBUG = DEBUG
@@ -44,9 +43,6 @@ SECRET_KEY = env.str('SECRET_KEY')
 
 # load_dotenv()
 
-# Receive environments from env-file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -54,7 +50,6 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -166,13 +161,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # Static directory fixed
 STATIC_URL = env.str('STATIC_URL', default='static/')
-# STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Media directory fixed
