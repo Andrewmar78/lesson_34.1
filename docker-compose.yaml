@@ -1,11 +1,11 @@
 version: '3.10'
 
 services:
-  db:
+  postgres:
     image: postgres:12.4-alpine
     environment:
-      POSTGRES_USER: todolist
-      POSTGRES_PASSWORD: todolist
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: todolist
     restart: always
     ports:
