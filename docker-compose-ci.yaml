@@ -18,7 +18,7 @@ services:
       - ./.env:/code/.env
 
   db:
-    image: postgres:12.4-alpine
+    image: postgres:13.0-alpine
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
