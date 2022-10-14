@@ -1,17 +1,24 @@
 version: '3.10'
 
 services:
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
   postgres:
     image: postgres:13.0-alpine
-    restart: on-failure
     env_file:
-      - ./.env
+      - .env
 #    environment:
 #      POSTGRES_USER: ${POSTGRES_USER}
 #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 #      POSTGRES_DB: ${POSTGRES_NAME}
+    restart: always
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     networks:
       - backend_nm
     volumes:
@@ -23,12 +30,18 @@ services:
       retries: 3
 
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: 725311/todolist:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - ./.env:/code/.env
+
     restart: always
     env_file:
-      - ./.env
+      - .env
     environment:
       DB_HOST: postgres
     depends_on:

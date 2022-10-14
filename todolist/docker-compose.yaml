@@ -1,0 +1,45 @@
+version: '3.10'
+
+services:
+  postgres:
+    image: postgres:13.0-alpine
+    restart: on-failure
+    env_file:
+      - .env
+#    environment:
+#      POSTGRES_USER: ${POSTGRES_USER}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#      POSTGRES_DB: ${POSTGRES_NAME}
+    ports:
+      - "5432:5432"
+    networks:
+      - backend_nm
+    volumes:
+      - ./pg_data_todolist:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_NAME}
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DB_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+volumes:
+  pg_data_todolist:
+
+networks:
+  backend_nm:
+    driver: bridge

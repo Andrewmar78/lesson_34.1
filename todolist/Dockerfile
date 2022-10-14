@@ -14,7 +14,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=on \
 RUN groupadd --system service && useradd --system -g service api
 
 # Копируем все
-COPY  todolist/ ./
+COPY  ./ ./
 COPY entrypoint.sh ./entrypoint.sh
 
 # Задаем пользователя
