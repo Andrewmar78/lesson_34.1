@@ -18,7 +18,7 @@ services:
 #      POSTGRES_DB: ${POSTGRES_NAME}
     restart: always
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     networks:
       - backend_nm
     volumes:
@@ -49,6 +49,7 @@ services:
         condition: service_healthy
     ports:
       - "8000:8000"
+#      - "${API_PORT}:${API_PORT}"
 
 volumes:
   pg_data_todolist:
