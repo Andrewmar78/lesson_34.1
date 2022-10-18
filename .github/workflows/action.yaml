@@ -27,6 +27,7 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      API_PORT: ${{ secrets.API_PORT }}
     steps:
     - name: clone code
       uses: actions/checkout@v2
