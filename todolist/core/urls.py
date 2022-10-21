@@ -1,7 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('core/', include('core.urls')),
-]
+# from django.urls import path
+#
+# from core import views
+#
+# urlpatterns = [
+#     path('signup', views.SignupView.as_view(), name='signup'),
+#     ]
