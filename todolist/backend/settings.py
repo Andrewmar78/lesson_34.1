@@ -121,7 +121,7 @@ DATABASES = {
         'PASSWORD': env.str('POSTGRES_PASSWORD'),
         'HOST': env.str('POSTGRES_HOST', default='127.0.0.1'),
         'PORT': env('POSTGRES_PORT'),
-        'API_PORT': env('API_PORT'),
+        # 'API_PORT': env('API_PORT'),
         }
 }
 
