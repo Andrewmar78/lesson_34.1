@@ -34,7 +34,7 @@ jobs:
     - name: render configs
       run: | 
         mkdir deploy
-        cat deploy/docker-compose.ci.yaml | envsubst > deploy/docker-compose.yaml
+        cat deploy/docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
         env
         cat deploy/docker-compose.yaml
     - name: copy files to server
