@@ -1,11 +1,19 @@
 version: '3.10'
 
 services:
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
   postgres:
     image: postgres:13.0-alpine
     restart: on-failure
     env_file:
-      - .env
+      - ./.env
 #    environment:
 #      POSTGRES_USER: ${POSTGRES_USER}
 #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
