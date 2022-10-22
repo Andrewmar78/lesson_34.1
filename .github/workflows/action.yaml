@@ -43,7 +43,8 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        source: "todolist/docker-compose.yaml, todolist/.env"
+        source: "deploy/docker-compose.yaml"
+#        source: "todolist/docker-compose.yaml, todolist/.env"
         target: "todolist"
         strip_components: 1
     - name: deploy app
