@@ -35,7 +35,7 @@ jobs:
       run: | 
         mkdir deploy
         cat todolist/docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
-        cat todolist/.env | envsubst > deploy//env
+        cat todolist/.env | envsubst > deploy/.env
 #        env
 #        cat deploy/docker-compose.yaml
     - name: copy files to server
