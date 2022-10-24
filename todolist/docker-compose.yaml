@@ -37,8 +37,9 @@ services:
     restart: always
     env_file:
       - ./.env
+# Перезапись значения .env-файла на данные из контейнера postgres
 #    environment:
-#      DB_HOST: ${POSTGRES_HOST}
+#      POSTGRES_HOST:   postgres
     depends_on:
       postgres:
         condition: service_healthy
