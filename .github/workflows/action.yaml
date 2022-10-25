@@ -20,14 +20,19 @@ jobs:
     needs: build_and_push
     env:
       SECRET_KEY: "${{ secrets.SECRET_KEY }}"
-      DEBUG: ${{ secrets.DEBUG }}
-      DB_ENGINE: ${{ secrets.DB_ENGINE }}
+      DEBUG: ${{ DEBUG }}
+#      DEBUG: ${{ secrets.DEBUG }}
+      DB_ENGINE: ${{ DB_ENGINE }}
+#      DB_ENGINE: ${{ secrets.DB_ENGINE }}
       POSTGRES_NAME: ${{ secrets.POSTGRES_NAME }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-      API_PORT: ${{ secrets.API_PORT }}
+      POSTGRES_HOST: ${{ POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ POSTGRES_PORT }}
+#      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+#      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      API_PORT: ${{ API_PORT }}
+#      API_PORT: ${{ secrets.API_PORT }}
     steps:
     - name: clone code
       uses: actions/checkout@v2
