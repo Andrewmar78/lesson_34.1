@@ -20,7 +20,7 @@ jobs:
     needs: build_and_push
     env:
       SECRET_KEY: "${{ secrets.SECRET_KEY }}"
-      DEBUG: ${DEBUG}
+      DEBUG: "${DEBUG}"
       DB_ENGINE: ${DB_ENGINE}
       POSTGRES_NAME: ${{ secrets.POSTGRES_NAME }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
