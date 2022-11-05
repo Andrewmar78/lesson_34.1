@@ -25,7 +25,7 @@ class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer
 
     def perform_create(self, serializer):
-        login(request=request, user=serializer.save())
+        login(request=self.request, user=serializer.save())
 
 
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
