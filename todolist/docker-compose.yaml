@@ -2,7 +2,7 @@ version: '3.10'
 
 services:
   front:
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-35
     restart: always
     ports:
       - "80:80"
@@ -23,7 +23,7 @@ services:
     networks:
       - backend_nm
     volumes:
-      - ./pg_data_todolist:/var/lib/postgresql/data
+      - pg_data_todolist:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
       interval: 5s
