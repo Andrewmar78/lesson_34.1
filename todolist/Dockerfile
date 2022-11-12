@@ -10,6 +10,11 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_NO_CACHE_DIR=off \
     PYTHON_PATH=/code
 
+# Устанавливаем зависимости
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
 # Создаем группу service, добавляем пользователя api для исключения работ из root
 RUN groupadd --system service && useradd --system -g service api
 
