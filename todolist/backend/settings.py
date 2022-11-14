@@ -14,6 +14,11 @@ from pathlib import Path
 
 import environ
 
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
+
+
 env = environ.Env(
     # set casting, default values
     DEBUG=(bool, False)
