@@ -1,0 +1,26 @@
+version: '3.10'
+
+services:
+  postgres:
+    image: postgres:13.0-alpine
+    restart: on-failure
+    env_file:
+      - ./.env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    networks:
+      - backend_nm
+    volumes:
+      - pg_data_todolist:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  pg_data_todolist:
+
+networks:
+  backend_nm:
+    driver: bridge

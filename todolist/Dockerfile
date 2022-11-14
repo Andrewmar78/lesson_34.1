@@ -28,7 +28,7 @@ USER api
 # Создаем код, который выполнится до запуска контейнера. Чтобы не создавать контейнер с миграциями
 ENTRYPOINT ["bash", "entrypoint.sh"]
 
-CMD ["python", "manage.py", "runserver", "0.0.0.8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # Указываем внешний порт
 EXPOSE 8000
 
