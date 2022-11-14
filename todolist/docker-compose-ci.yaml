@@ -8,6 +8,8 @@ services:
       - "80:80"
     depends_on:
       - api
+    networks:
+      - backend_nm
 
   postgres:
     image: postgres:13.0-alpine
@@ -49,6 +51,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - backend_nm
 #    ports:
 #      - "8000:8000"
 #      - "${API_PORT}:${API_PORT}"
