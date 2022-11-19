@@ -27,6 +27,10 @@ class GoalCategory(BaseModel):
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.goals = None
+
     def __str__(self):
         return self.title
 
