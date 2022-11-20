@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from rest_framework import generics, status, permissions, request
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 
 from core.models import User
@@ -13,16 +13,24 @@ class SignupView(generics.CreateAPIView):
 # class LoginView(generics.GenericAPIView):
 #     serializer_class = LoginSerializer
 #
-#     def post(self, request, *args, **kwargs):
-#         """Переопределение метода входа без сохранения пользователя"""
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         login(request=request, user=serializer.save())
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # def post(self, request, *args, **kwargs):
+    #     """Переопределение метода входа без сохранения пользователя"""
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     login(request=request, user=serializer.save())
+    #     return Response(serializer.data)
+    #     login(request=request, user=serializer.save())
+    #     return Response(ProfileSerializer(serializer.save().data)
 
 
 class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
         login(request=self.request, user=serializer.save())
