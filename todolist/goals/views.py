@@ -107,7 +107,7 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
 
 class GoalCreateView(CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = [GoalPermission]
+    serializer_class = GoalCreateSerializer
 
 
 class GoalListView(ListAPIView):
