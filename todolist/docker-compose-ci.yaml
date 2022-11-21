@@ -55,7 +55,6 @@ services:
       - backend_nm
 #    ports:
 #      - "8000:8000"
-#      - "${API_PORT}:${API_PORT}"
 
 volumes:
   pg_data_todolist:
