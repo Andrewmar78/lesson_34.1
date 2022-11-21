@@ -35,7 +35,7 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BoardSerializer
 
     def get_queryset(self):
-        return Board.objects.prefetc_related("participants").filter(
+        return Board.objects.prefetch_related("participants").filter(
             participants__user_id=self.request.user.id,
             is_deleted=False)
 
@@ -51,6 +51,7 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class GoalCategoryCreateView(CreateAPIView):
+    model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategoryCreateSerializer
 

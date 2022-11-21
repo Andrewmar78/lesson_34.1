@@ -65,10 +65,6 @@ class GoalCategory(BaseModel):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(args, kwargs)
-        self.goals = None
-
     def __str__(self):
         return self.title
 
