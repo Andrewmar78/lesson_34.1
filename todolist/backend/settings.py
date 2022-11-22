@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'social_django',
     'core',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -197,3 +198,5 @@ REST_FRAMEWORK = {
     )
 }
 
+# Telegram bot
+TG_TOKEN = env.str('TG_TOKEN')
