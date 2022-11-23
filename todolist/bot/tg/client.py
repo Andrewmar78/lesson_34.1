@@ -4,7 +4,7 @@ from bot.tg.models import GetUpdatesResponse, SendMessageResponse
 
 
 class TgClient:
-    def __int__(self, token: str):
+    def __init__(self, token: str):
         self.token = token
 
     def get_url(self, method: str) -> str:
