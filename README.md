@@ -1,4 +1,4 @@
-# Todolist - site
+# Todolist - coursework
 
 1. Backend: django restframework, python3.10
 2. Database: postgres:13.0-alpine
@@ -8,4 +8,5 @@
 pip install -r requirements.txt
 
 ./manage.py runserver
-(python3 manage.py runserver)
+or
+python3 manage.py runserver
