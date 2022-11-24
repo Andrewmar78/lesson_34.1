@@ -46,6 +46,17 @@ services:
 #    ports:
 #      - "8000:8000"
 
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./.env
+    command: python3 manage.py runbot
+    networks:
+      - backend_nm
+
 volumes:
   pg_data_todolist:
 

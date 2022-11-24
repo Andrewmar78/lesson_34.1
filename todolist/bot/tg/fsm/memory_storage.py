@@ -41,6 +41,3 @@ class MemoryStorage(Storage):
 
     def update_data(self, chat_id: int, **kwargs) -> None:
         self._resolve_chat(chat_id).data.update(**kwargs)
-
-    def get_all_data(self, chat_id: int) -> StorageData:
-        return self._resolve_chat(chat_id)
