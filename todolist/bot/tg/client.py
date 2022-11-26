@@ -1,17 +1,11 @@
-from typing import Type
-
 import requests
-
-from bot.models import TgUser
 from bot.tg.models import GetUpdatesResponse, SendMessageResponse
 
 
 class TgClient:
     """Telegram bot client"""
-    # def __init__(self, token: str, tg_user: Type[TgUser]):
     def __init__(self, token: str):
         self.token = token
-        # self.tg_user = tg_user
 
     def get_url(self, method: str) -> str:
         """Telegram Bot API URL"""
