@@ -16,8 +16,8 @@ import environ
 
 import django
 from django.utils.encoding import force_str
-django.utils.encoding.force_text = force_str
 
+django.utils.encoding.force_text = force_str
 
 env = environ.Env(
     # set casting, default values
@@ -29,7 +29,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Receive environments from env-file
 environ.Env.read_env(BASE_DIR.joinpath('.env'))
-# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # SITE_ROOT = root()
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -95,33 +94,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# for sqlite3
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# for postgres
-# DATABASE_URL should be moved to .env
-# DATABASE_URL=psql://:@:/
-# DATABASES = {'default': env.db('DATABASE_URL')}
 
 DATABASES = {
     'default': {
         'ENGINE': env('DB_ENGINE'),
-        'NAME': env.str('POSTGRES_DB'),
-        'USER': env.str('POSTGRES_USER'),
+        'NAME': env.str('POSTGRES_DB', default='postgres'),
+        'USER': env.str('POSTGRES_USER', default='postgres_user'),
         'PASSWORD': env.str('POSTGRES_PASSWORD'),
         'HOST': env.str('POSTGRES_HOST', default='127.0.0.1'),
         'PORT': env('POSTGRES_PORT'),
-        # 'API_PORT': env('API_PORT'),
-        }
+    }
 }
 
 # Password validation
@@ -141,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -192,6 +175,10 @@ SOCIAL_AUTH_USER_MODEL = 'core.User'
 
 # Rest-framework
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DJANGO_FILTER_BACKEND': (
         'django_filters.rest_framework.DjangoFilterBackend',

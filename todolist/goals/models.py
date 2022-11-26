@@ -5,6 +5,7 @@ from core.models import User
 
 
 class BaseModel(models.Model):
+    """Abstract class for created & updated db model"""
     created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Дата последнего обновления", auto_now=True)
 
@@ -19,6 +20,7 @@ class BaseModel(models.Model):
 
 
 class Board(BaseModel):
+    """Board class"""
     title = models.CharField(verbose_name="Название", max_length=255)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
 
@@ -28,6 +30,7 @@ class Board(BaseModel):
 
 
 class BoardParticipant(BaseModel):
+    """Board participant class"""
     class Role(models.IntegerChoices):
         owner = 1, "Владелец"
         writer = 2, "Редактор"
@@ -56,6 +59,7 @@ class BoardParticipant(BaseModel):
 
 
 class GoalCategory(BaseModel):
+    """Goal category class"""
     board = models.ForeignKey(Board, verbose_name="Доска", on_delete=models.PROTECT, related_name="categories")
     title = models.CharField(verbose_name="Название", max_length=255)
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
@@ -70,17 +74,20 @@ class GoalCategory(BaseModel):
 
 
 class Goal(BaseModel):
+    """Goal class"""
     class Meta:
         verbose_name = "Цель"
         verbose_name_plural = "Цели"
 
     class Status(models.IntegerChoices):
+        """Goal status class"""
         to_do = 1, "К выполнению"
         in_progress = 2, "В процессе"
         done = 3, "Выполнено"
         archived = 4, "Архив"
 
     class Priority(models.IntegerChoices):
+        """Goal priority class"""
         low = 1, "Низкий"
         medium = 2, "Средний"
         high = 3, "Высокий"
@@ -112,9 +119,10 @@ class Goal(BaseModel):
 
 
 class GoalComment(BaseModel):
+    """Goal comment class"""
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Автор", related_name="comments")
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE, verbose_name="Цель", related_name="comments")
-    text = models.TextField(verbose_name="Текст")
+    text = models.TextField(verbose_name="Текст", max_length=255)
 
     class Meta:
         verbose_name = "Комментарий"

@@ -10,6 +10,7 @@ from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipan
 
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
+    """GoalCategory creation serializer"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -17,21 +18,23 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user", "is_deleted")
 
-    def validate_board(self, value: Board):
+    def validate_board(self, value: Board) -> Board:
+        """Validation of board"""
         if value.is_deleted:
-            raise serializers.ValidationError("Not allowed category to be deleted")
+            raise serializers.ValidationError("Not allowed: board is deleted")
 
         if not BoardParticipant.objects.filter(
                 board=value,
                 role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
                 user=self.context['request'].user
         ).exists():
-            raise serializers.ValidationError("Only for owners or writers")
+            raise serializers.ValidationError("Allowed only for owners or writers")
 
         return value
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):
+    """GoalCategory serializer"""
     user = ProfileSerializer(read_only=True)
 
     class Meta:
@@ -41,6 +44,7 @@ class GoalCategorySerializer(serializers.ModelSerializer):
 
 
 class GoalCreateSerializer(serializers.ModelSerializer):
+    """Goal creation serializer"""
     category = serializers.PrimaryKeyRelatedField(
         queryset=GoalCategory.objects.filter(is_deleted=False)
     )
@@ -51,9 +55,10 @@ class GoalCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
 
-    def validate_category(self, value: GoalCategory):
+    def validate_category(self, value: GoalCategory) -> GoalCategory:
+        """Validation of goal category"""
         if self.context["request"].user != value.user:
-            raise PermissionDenied
+            raise PermissionDenied("Вам запрещено создавать цели для данной категории")
 
         # if self.instance.category.board_id != value.board_id:
         #     raise serializers.ValidationError("Transfer from one project to another is not allowed")
@@ -63,12 +68,13 @@ class GoalCreateSerializer(serializers.ModelSerializer):
                 role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
                 user=self.context["request"].user,
         ).exists():
-            raise PermissionDenied
+            raise PermissionDenied("Вам запрещено создавать цели для данной категории")
 
         return value
 
 
 class GoalSerializer(serializers.ModelSerializer):
+    """Goal serializer"""
     category = serializers.PrimaryKeyRelatedField(
         queryset=GoalCategory.objects.filter(is_deleted=False)
     )
@@ -78,13 +84,15 @@ class GoalSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
 
-    def validate_category(self, value: Type[GoalCategory]):
+    def validate_category(self, value: Type[GoalCategory]) -> GoalCategory:
+        """Validation of goal category"""
         if self.context["request"].user != value.user:
-            raise PermissionDenied
+            raise PermissionDenied("Вам запрещены изменения целей для данной категории")
         return value
 
 
 class GoalCommentCreateSerializer(serializers.ModelSerializer):
+    """GoalComment creation serializer"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -94,6 +102,7 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
 
 
 class GoalCommentSerializer(serializers.ModelSerializer):
+    """GoalComment serializer"""
     user = ProfileSerializer(read_only=True)
 
     class Meta:
@@ -103,6 +112,7 @@ class GoalCommentSerializer(serializers.ModelSerializer):
 
 
 class BoardCreateSerializer(serializers.ModelSerializer):
+    """Board creation serializer"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -110,8 +120,8 @@ class BoardCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "is_deleted", "created", "updated")
         fields = "__all__"
 
-    def create(self, validated_data):
-        """Создание доски, связь ее с владельцем"""
+    def create(self, validated_data: dict) -> Board:
+        """Board creation, add user to it as owner"""
         user = validated_data.pop("user")
         board = Board.objects.create(**validated_data)
         BoardParticipant.objects.create(
@@ -121,6 +131,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
 
 
 class BoardParticipantSerializer(serializers.ModelSerializer):
+    """Board participant serializer"""
     role = serializers.ChoiceField(required=True, choices=BoardParticipant.Role.choices[1:])
     user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
 
@@ -131,6 +142,7 @@ class BoardParticipantSerializer(serializers.ModelSerializer):
 
 
 class BoardSerializer(serializers.ModelSerializer):
+    """Board serializer"""
     participants = BoardParticipantSerializer(many=True)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
@@ -139,7 +151,8 @@ class BoardSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created", "updated")
 
-    def update(self, instance, validated_data):
+    def update(self, instance, validated_data: dict) -> Board:
+        """Update Board, add users to the board participants"""
         owner = validated_data.pop("user")
         new_participants = validated_data.pop("participants")
         new_by_id = {part["user"].id: part for part in new_participants}
@@ -170,6 +183,7 @@ class BoardSerializer(serializers.ModelSerializer):
 
 
 class BoardListSerializer(serializers.ModelSerializer):
+    """Board list serializer"""
     class Meta:
         model = Board
         fields = "__all__"
