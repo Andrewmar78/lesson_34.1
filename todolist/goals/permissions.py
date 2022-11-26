@@ -13,7 +13,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 class BoardPermission(IsAuthenticated):
-    def has_object_permission(self, request, view, obj: Board):
+    """Permission for read or write access to Board"""
+    def has_object_permission(self, request, view, obj: Board) -> bool:
         filters: dict = {"user": request.user, "board": obj}
         if request.method not in permissions.SAFE_METHODS:
             filters["role"] = BoardParticipant.Role.owner
@@ -21,7 +22,8 @@ class BoardPermission(IsAuthenticated):
 
 
 class GoalCategoryPermission(IsAuthenticated):
-    def has_object_permission(self, request, view, obj: GoalCategory):
+    """Permission for read or write access to GoalCategory"""
+    def has_object_permission(self, request, view, obj: GoalCategory) -> bool:
         filters: dict = {"user": request.user, "board": obj.board}
         if request.method not in permissions.SAFE_METHODS:
             filters["role__in"] = [BoardParticipant.Role.owner, BoardParticipant.Role.writer]
@@ -29,7 +31,8 @@ class GoalCategoryPermission(IsAuthenticated):
 
 
 class GoalPermission(IsAuthenticated):
-    def has_object_permission(self, request, view, obj: Goal):
+    """Permission for read or write access to Goal"""
+    def has_object_permission(self, request, view, obj: Goal) -> bool:
         filters: dict = {"user": request.user, "board": obj.category.board}
         if request.method not in permissions.SAFE_METHODS:
             filters["role__in"] = [BoardParticipant.Role.owner, BoardParticipant.Role.writer]
@@ -37,7 +40,8 @@ class GoalPermission(IsAuthenticated):
 
 
 class CommentsPermission(IsAuthenticated):
-    def has_object_permission(self, request, view, obj: GoalComment):
+    """Permission for read or write access to GoalComment"""
+    def has_object_permission(self, request, view, obj: GoalComment) -> bool:
         return any((
             request.method in permissions.SAFE_METHODS,
             obj.user_id == request.user.id,
