@@ -7,6 +7,7 @@ from typing import NoReturn
 from django.core.management import BaseCommand
 from pydantic import BaseModel
 
+from backend import settings
 from backend.settings import TG_TOKEN
 from bot.models import TgUser
 from bot.tg.client import TgClient
@@ -38,7 +39,7 @@ class Command(BaseCommand):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tg_client = TgClient(TG_TOKEN)
+        self.tg_client = TgClient(settings.TG_TOKEN)
         self.storage = MemoryStorage()
 
     @staticmethod
