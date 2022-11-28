@@ -8,6 +8,7 @@ from bot.tg.client import TgClient
 
 
 class VerificationView(generics.GenericAPIView):
+    """Verification of telegram user view"""
     model = TgUser
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = TgUserSerializer
