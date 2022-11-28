@@ -7,7 +7,7 @@ class MessageFrom(BaseModel):
     id: int
     first_name: str
     last_name: Optional[str] = None
-    username: Optional[str]
+    username: Optional[str] = None
 
 
 class Chat(BaseModel):
