@@ -9,8 +9,8 @@ from goals.models import Goal, GoalCategory, BoardParticipant
 
 @pytest.mark.django_db
 class TestGoalCreate:
-    """Goal creation test for user"""
-    def test_create_goal_success(self, client, user, goal_category):
+    """Goal creation test for authorised user"""
+    def test_create_goal_authorised(self, client, user, goal_category):
         user = user.user
         client.force_login(user=user)
 
