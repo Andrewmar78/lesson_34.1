@@ -54,7 +54,7 @@ class TestGoalCategoryView:
         assert category.is_deleted is True
         assert goal.status == Goal.Status.archived
 
-    def test_category_retrieve_by_notallowed(self, client, user_category):
+    def test_category_retrieve_by_nonallowed(self, client, user_category):
         non_allowed_user = UserFactory()
         client.force_login(user=non_allowed_user)
         response = client.get(path=f"/goals/models/{user_category.id}")
@@ -68,18 +68,13 @@ class TestGoalCategoryView:
         response = client.patch(path=f"/goals/models/{user_category.id}", data=data, content_type='application/json', )
 
         assert response.status_code == 403
-        assert response.data == {
-            'detail': ErrorDetail(string='У Вас нет права редактирования или удаления данной категории',
-                                  code='permission_denied')
-        }
+        assert response.data == {'detail': ErrorDetail(string='Доступно только чтение', code='permission_denied')}
 
     def test_category_destroy_by_writer(self, client, board_participant, user_category):
         board_participant.role = BoardParticipant.Role.writer
         board_participant.save()
         client.force_login(user=board_participant.user)
-        response = client.delete(
-            path=f"/goals/models/{user_category.id}",
-        )
+        response = client.delete(path=f"/goals/models/{user_category.id}", )
         category = GoalCategory.objects.latest('updated')
         goal = Goal.objects.get(category=category)
 
