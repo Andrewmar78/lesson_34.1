@@ -68,7 +68,7 @@ class UpdatePasswordSerializer(serializers.Serializer):
     new_password = PasswordField(required=True)
 
     def validate(self, attrs: dict):
-        if not (user:= attrs['user']):
+        if not (user := attrs['user']):
             raise NotAuthenticated
         if not user.check_password(attrs['old_password']):
             raise ValidationError({'old_password': 'field is incorrect'})

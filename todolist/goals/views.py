@@ -5,9 +5,8 @@ from django.db.models import Q, QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions, filters, generics
-from rest_framework.pagination import LimitOffsetPagination
 
-from goals.filters import GoalDateFilter, BoardGoalCategoryFilter
+from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment, Board
 from goals.permissions import IsOwnerOrReadOnly, BoardPermission, GoalCategoryPermission, GoalPermission, \
     CommentsPermission
@@ -75,13 +74,12 @@ class GoalCategoryListView(ListAPIView):
     model = GoalCategory
     permission_classes = [GoalCategoryPermission]
     serializer_class = GoalCategorySerializer
-    pagination_class = LimitOffsetPagination
     filter_backends = [
         filters.OrderingFilter,
         filters.SearchFilter,
         DjangoFilterBackend,
     ]
-    filterset_fields = BoardGoalCategoryFilter
+    filterset_fields = ['board']
     ordering_fields = ["title", "created"]
     ordering = ["title"]
     search_fields = ["title"]
