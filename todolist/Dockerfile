@@ -12,15 +12,14 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=on \
 
 # Устанавливаем зависимости
 COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Создаем группу service, добавляем пользователя api для исключения работ из root
 RUN groupadd --system service && useradd --system -g service api
 
 # Копируем все
 COPY  ./ ./
-COPY entrypoint.sh ./entrypoint.sh
+#COPY entrypoint.sh ./entrypoint.sh
 
 # Задаем пользователя
 USER api

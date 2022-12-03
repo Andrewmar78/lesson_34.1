@@ -1,0 +1,6 @@
+.env
+.env.ci
+action.copy.yaml
+docker-compose*
+pyproject.toml
+tests/
