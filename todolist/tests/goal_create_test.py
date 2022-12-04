@@ -9,9 +9,9 @@ from goals.models import Goal, GoalCategory, BoardParticipant
 
 @pytest.mark.django_db
 class TestGoalCreate:
-    """Goal creation test for authorised user"""
-    def test_create_goal_authorised(self, client, user, goal_category):
-        user = user.user
+    """Goal creation test for user"""
+
+    def test_create_goal_success(self, client, user, goal_category):
         client.force_login(user=user)
 
         data = {
@@ -21,14 +21,13 @@ class TestGoalCreate:
         }
 
         response = client.post(
-            path=reverse('goals:create_goal'),
+            path=reverse('goal-create'),
             data=data,
-            content_type='application/json',
         )
 
         goal = Goal.objects.last()
 
-        assert response.status_code == 201
+        assert response.status_code == 201, response.json()
         assert response.data == {
             "id": goal.id,
             "status": 1,

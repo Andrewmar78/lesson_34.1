@@ -13,8 +13,7 @@ class TestBoardCreateView:
         data = {"title": "New Board", }
         response = client.post(
             data=data,
-            path=reverse('goals:create_board'),
-            content_type='application/json',
+            path=reverse('board-create'),
         )
         board = Board.objects.last()
 
