@@ -7,7 +7,7 @@ from goals.models import Board
 @pytest.mark.django_db
 class TestBoardCreateView:
     """Board creation test for authorised user"""
-    def test_create_board_success(self, client, user):
+    def test_create_board_authorised(self, client, user):
         client.force_login(user=user)
 
         data = {"title": "New Board", }
