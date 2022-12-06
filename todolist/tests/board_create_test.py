@@ -7,14 +7,13 @@ from goals.models import Board
 @pytest.mark.django_db
 class TestBoardCreateView:
     """Board creation test for authorised user"""
-    def test_create_board_success(self, client, user):
+    def test_create_board_authorised(self, client, user):
         client.force_login(user=user)
 
         data = {"title": "New Board", }
         response = client.post(
             data=data,
-            path=reverse('goals:create_board'),
-            content_type='application/json',
+            path=reverse('board-create'),
         )
         board = Board.objects.last()
 

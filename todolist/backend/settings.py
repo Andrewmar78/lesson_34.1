@@ -14,25 +14,18 @@ from pathlib import Path
 
 import environ
 
-import django
-from django.utils.encoding import force_str
-
-django.utils.encoding.force_text = force_str
-
-env = environ.Env(
-    # set casting, default values
-    DEBUG=(bool, False)
-)
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Receive environments from env-file
-environ.Env.read_env(BASE_DIR.joinpath('.env'))
+if (env_path := BASE_DIR.joinpath('.env')) and env_path.exists():
+    environ.Env.read_env(env_path)
 
 # SITE_ROOT = root()
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG', default=False)
 
 # TEMPLATE_DEBUG = DEBUG
 # public_root = root.path('public/')
@@ -45,7 +38,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -56,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    "django_filters",
+    'django_filters',
     'social_django',
     'core',
     'goals',
@@ -104,7 +97,7 @@ DATABASES = {
         'USER': env.str('POSTGRES_USER', default='postgres_user'),
         'PASSWORD': env.str('POSTGRES_PASSWORD'),
         'HOST': env.str('POSTGRES_HOST', default='127.0.0.1'),
-        'PORT': env('POSTGRES_PORT'),
+        'PORT': env('POSTGRES_PORT', default='5432'),
     }
 }
 
@@ -130,9 +123,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -140,7 +132,7 @@ USE_TZ = True
 
 # Static directory fixed
 STATIC_URL = env.str('STATIC_URL', default='static/')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = BASE_DIR.joinpath('static')
 
 # Media directory fixed
 # MEDIA_ROOT = public_root('media')
@@ -175,15 +167,12 @@ SOCIAL_AUTH_USER_MODEL = 'core.User'
 
 # Rest-framework
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DJANGO_FILTER_BACKEND': (
         'django_filters.rest_framework.DjangoFilterBackend',
-    )
+    ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 # Telegram bot
-TG_TOKEN = env.str('TG_TOKEN')
+TG_TOKEN = env.str('TG_TOKEN', default='')

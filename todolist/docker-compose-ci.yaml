@@ -9,21 +9,15 @@ services:
     depends_on:
       - api
     networks:
-      - backend_nm
+      - frontend_nw
 
   postgres:
     image: postgres:13.0-alpine
+    restart: on-failure
     env_file:
       - ./.env
-#    environment:
-#      POSTGRES_USER: ${POSTGRES_USER}
-#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#      POSTGRES_DB: ${POSTGRES_DB}
-    restart: always
-#    ports:
-#      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     networks:
-      - backend_nm
+      - backend_nw
     volumes:
       - pg_data_todolist:/var/lib/postgresql/data
     healthcheck:
@@ -33,41 +27,35 @@ services:
       retries: 3
 
   api:
-    image: 725311/todolist:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#    ports:
-#      - "8000:8000"
-#    volumes:
-#      - ./.env:/code/.env
-
+    image: ...
     restart: always
     env_file:
-      - .env
-# Перезапись значения .env-файла на данные из контейнера postgres
-#    environment:
-#      POSTGRES_HOST:   postgres
+      - ./.env
+    environment:
+      POSTGRES_HOST: postgres
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - backend_nm
-#    ports:
-#      - "8000:8000"
+      - backend_nw
+      - frontend_nw
 
-  bot:
-    image: 725311/todolist:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
-    restart: always
-    env_file:
-      - ./.env
-    command: python3 manage.py runbot
-    networks:
-      - backend_nm
+#  bot:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    restart: always
+#    env_file:
+#      - ./.env
+#    command: python3 manage.py runbot
+#    networks:
+#      - backend_nw
 
 volumes:
   pg_data_todolist:
 
 networks:
-  backend_nm:
+  backend_nw:
+    driver: bridge
+  frontend_nw:
     driver: bridge

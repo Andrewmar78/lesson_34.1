@@ -6,8 +6,8 @@ from goals.models import GoalCategory
 
 @pytest.mark.django_db
 class TestGoalCategoryCreateView:
-    """Goal category creation for user"""
-    def test_create_category_success(self, client, board_participant):
+    """Goal category creation for authorised user"""
+    def test_create_category_authorised(self, client, board_participant):
         user = board_participant.user
         board = board_participant.board
         client.force_login(user=user)
