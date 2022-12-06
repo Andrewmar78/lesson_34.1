@@ -5,7 +5,7 @@ from django.utils import timezone
 import factory.fuzzy
 
 from core.models import User
-from goals.models import Board, GoalCategory, Goal
+from goals.models import Board, GoalCategory, Goal, BoardParticipant
 
 
 class BoardFactory(factory.django.DjangoModelFactory):
@@ -57,3 +57,13 @@ class GoalFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Goal
+
+
+class BoardParticipantFactory(factory.django.DjangoModelFactory):
+    """Test class for BoardParticipant"""
+    class Meta:
+        model = BoardParticipant
+
+    user = factory.SubFactory(UserFactory)
+    board = factory.SubFactory(BoardFactory)
+    role = BoardParticipant.Role.owner

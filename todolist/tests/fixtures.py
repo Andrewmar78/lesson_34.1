@@ -6,6 +6,12 @@ from tests.factories import GoalCategoryFactory, GoalFactory
 
 
 @pytest.fixture()
+def board_participant(board_participant) -> Any:
+    """Return board participant"""
+    return board_participant
+
+
+@pytest.fixture()
 def user_board(board_participant) -> Any:
     """Return user board"""
     return board_participant.board

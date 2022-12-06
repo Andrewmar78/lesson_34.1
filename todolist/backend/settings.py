@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 import environ
@@ -97,7 +97,7 @@ DATABASES = {
         'USER': env.str('POSTGRES_USER', default='postgres_user'),
         'PASSWORD': env.str('POSTGRES_PASSWORD'),
         'HOST': env.str('POSTGRES_HOST', default='127.0.0.1'),
-        'PORT': env('POSTGRES_PORT'),
+        'PORT': env('POSTGRES_PORT', default='5432'),
     }
 }
 
